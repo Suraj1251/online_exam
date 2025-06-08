@@ -14,8 +14,8 @@ $questions = $result->fetch_all(MYSQLI_ASSOC);
 $score = 0;
 $total = count($questions);
 $negative_mark = 0;
-$student_name = $_SESSION['username'] ?? "Student Name";
-$student_role = "Student";
+$student_name = $_SESSION['name'] ?? "Student Name";
+// $student_role = "Student";
 ?>
 
 <!DOCTYPE html>
@@ -125,7 +125,7 @@ $student_role = "Student";
 
         <div class="info">
         Name: <strong><?php echo htmlspecialchars($student_name); ?></strong><br>
-        Role: <strong><?php echo htmlspecialchars($student_role); ?></strong>
+        <!-- Role: <strong><?php echo htmlspecialchars($student_role); ?></strong> -->
     </div>
 
 

@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 }
 
 $question = $questions[$question_index];
-$saved_answer = isset($_SESSION['answers'][$question_index]) ? $_SESSION['answers'][$question_index] : "";
+$saved_answer = $_SESSION['answers'][$question_index] ?? "";
 ?>
 
 <!DOCTYPE html>
@@ -48,6 +48,10 @@ $saved_answer = isset($_SESSION['answers'][$question_index]) ? $_SESSION['answer
             background-color: #f4f6f8;
             margin: 0;
             padding: 0;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         .container {
@@ -72,6 +76,10 @@ $saved_answer = isset($_SESSION['answers'][$question_index]) ? $_SESSION['answer
             cursor: pointer;
             background: #f9f9f9;
             transition: 0.3s;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         .options input[type="radio"] {
@@ -105,7 +113,7 @@ $saved_answer = isset($_SESSION['answers'][$question_index]) ? $_SESSION['answer
         }
     </style>
 </head>
-<body>
+<body oncopy="return false" oncut="return false" onpaste="return false">
 
     <div class="container">
         <h3>Question <?= $question_index + 1 ?> of <?= $total ?></h3>
@@ -133,6 +141,7 @@ $saved_answer = isset($_SESSION['answers'][$question_index]) ? $_SESSION['answer
     </div>
 
     <script>
+        // Validate answer is selected
         function validateSelection() {
             const radios = document.querySelectorAll("input[name='answer']");
             let selected = false;
@@ -147,7 +156,25 @@ $saved_answer = isset($_SESSION['answers'][$question_index]) ? $_SESSION['answer
             return true;
         }
 
-       
+        // Disable right-click
+        document.addEventListener('contextmenu', event => {
+            event.preventDefault();
+            alert("Right-click is disabled during the exam.");
+        });
+
+        // Disable copy
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+            alert("Copying is not allowed during the exam.");
+        });
+
+        // Auto-submit on tab switch or window blur
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'hidden') {
+                alert("You switched the tab or minimized the window. The exam is now submitted.");
+                window.location.href = "result.php";
+            }
+        });
     </script>
 </body>
 </html>
